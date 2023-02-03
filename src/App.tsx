@@ -1,15 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter} from "react-router-dom";
-import Header from "./header/Header";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Header from "./app/header/Header";
+import {Button} from "@mui/material";
+import AuthView from "./app/auth/AuthView";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+          <Header/>
 
-        <Header/>
+          <Routes>
+              <Route path="/auth" element={<AuthView/>}/>
+
+              {/*<Route path="*" element={<AuthView/>}/>*/}
+          </Routes>
+          <Button variant="contained">Contained</Button>
 
       </BrowserRouter>
 
