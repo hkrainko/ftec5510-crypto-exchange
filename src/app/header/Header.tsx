@@ -1,8 +1,10 @@
-import {Button, createStyles, Theme, useTheme} from "@mui/material";
+import {Button, createStyles, IconButton, Theme, Typography, useTheme} from "@mui/material";
 import {makeStyles, withStyles} from "tss-react/mui";
 import {AppBar} from "@mui/material";
 import {createMakeAndWithStyles} from "tss-react";
 import {useState} from "react";
+import { ReactComponent as Logo } from '../../logo.svg';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 // const { makeStyles, withStyles } = createMakeAndWithStyles({
 //     useTheme,
@@ -30,8 +32,13 @@ export default function Header() {
 
     return (
         <div>
-            <AppBar position="static">
-                This is a head bar
+            <AppBar>
+                <IconButton edge="start" color="inherit" aria-label="logo">
+                    <PaymentIcon/>
+                    <Typography align="left" variant="h6" component="div" ml={1}>
+                        Exchange Payment
+                    </Typography>
+                </IconButton>
             </AppBar>
         </div>
     )

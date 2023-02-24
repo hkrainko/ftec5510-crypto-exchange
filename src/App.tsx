@@ -4,14 +4,14 @@ import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from "./app/header/Header";
 import {
-    Avatar,
+    Avatar, Box,
     Button,
     Card, CardActions,
     CardContent,
     CardHeader,
     CardMedia,
     Container,
-    IconButton,
+    IconButton, Stack,
     Typography
 } from "@mui/material";
 import AuthView from "./app/auth/AuthView";
@@ -22,33 +22,56 @@ function App() {
       <BrowserRouter>
           <Header/>
 
-          <Container maxWidth="sm">
+          <Box mt={16}>
+              <Container maxWidth="xs">
+                  <h2>2555 USD</h2>
+                  <h2>= 2555 USDT</h2>
+                  <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      spacing={2}
+                  >
+                      <h3>Merchant Name</h3>
+                      <h3>XXX insurance</h3>
+                  </Stack>
+                  <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      spacing={2}
+                  >
+                      <h3>Product Name</h3>
+                      <h3>Premium Plan A</h3>
+                  </Stack>
+                  <Card>
+                      <Box mt={2}>
+                          <CardHeader
+                              subheader="Scan this QRCode in the Binance APP"
+                          />
+                      </Box>
+                      <Box p={8} mt={-8} mb={-8}>
+                          <CardMedia
+                              component="img"
+                              image="qrcode.png"
+                              alt="Paella dish"
+                          />
+                      </Box>
+                      <CardContent>
+                          <Typography variant="body2" color="text.secondary">
+                              Time remaining 09:12
+                          </Typography>
+                      </CardContent>
+                  </Card>
+              </Container>
+          </Box>
 
-              <h2>2555 USD</h2>
-              <h2>= 2555 USDT</h2>
 
-              <h2>3332</h2>
-              <h2>3332</h2>
-
-              <Card>
-                  <CardHeader>
-                        <h2>3332</h2>
-                  </CardHeader>
-                  <CardMedia
-                      component="img"
-                      height="194"
-                      image="/static/images/cards/paella.jpg"
-                      alt="Paella dish"
-                  />
-                  <CardContent>
-                      <Typography variant="body2" color="text.secondary">
-                          This impressive paella is a perfect party dish and a fun meal to cook
-                          together with your guests. Add 1 cup of frozen peas along with the mussels,
-                          if you like.
-                      </Typography>
-                  </CardContent>
-              </Card>
-          </Container>
+          <Box mt={2}>
+              <Button>
+                  <Typography variant="body1" color="text.secondary">Cancel</Typography>
+              </Button>
+          </Box>
 
 
 
