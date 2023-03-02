@@ -10,7 +10,8 @@ import Order from "../../../domain/entities/order/order";
 
 export class HttpOrderRepo implements OrderRepo {
 
-    private apiPath = "";
+    // private apiPath = "https://cors-anywhere.herokuapp.com/http://www.muecode.com:8080";
+    private apiPath = "https://cors-anywhere.herokuapp.com/http://www.muecode.com:8080";
     private apiToken = null;
 
     private createOrderMapper = new HttpCreateOrderMapper()
@@ -18,11 +19,7 @@ export class HttpOrderRepo implements OrderRepo {
 
     createOrder(order: OrderRequest): Promise<Order> {
         return axios
-            .post<HttpCreateOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order`, {
-                // headers: apiToken ? {
-                //     Authorization: 'Bearer ' + apiToken,
-                // } : null
-            })
+            .post<HttpCreateOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order`, order)
             .then(resp => {
                 return this.createOrderMapper.mapFrom(resp.data)
             })

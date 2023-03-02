@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -15,12 +15,31 @@ import {
     Typography
 } from "@mui/material";
 import AuthView from "./app/auth/AuthView";
+import OrderRepo from "./domain/interfaces/repositories/order.repo";
+import OrderUseCase from "./domain/interfaces/usecases/order.usecase";
+import DefaultOrderUsecase from "./domain/usecases/default.order.usecase";
+
+const orderUseCase: OrderUseCase = new DefaultOrderUsecase()
 
 function App() {
 
     const queryParams = new URLSearchParams(window.location.search)
     const redirectUrl = queryParams.get('redirectUrl')
 
+    useEffect(() => {
+        orderUseCase.createOrder({
+            currency: "", expireTime: 0, orderAmount: 0, supportPayCurrency: []
+        }).then((order) => {
+            console.log(`createOrder success:${order}`)
+            return orderUseCase.queryOrder({
+                prepayId: order.prepayId
+            })
+        }).then((orderResult) => {
+            console.log(`queryOrder success:${orderResult}`)
+        }).catch((e) => {
+            console.log(e)
+        });
+    }, [])
 
     const onClickCancel = () => {
         console.log(`cancel action`)
