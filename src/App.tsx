@@ -28,7 +28,12 @@ function App() {
 
     useEffect(() => {
         orderUseCase.createOrder({
-            currency: "", expireTime: 0, orderAmount: 0, supportPayCurrency: []
+            currency: "USDT",
+            expireTime: 60000,
+            orderAmount: 100,
+            supportPayCurrency: [
+                "USDT",
+            ]
         }).then((order) => {
             console.log(`createOrder success:${order}`)
             return orderUseCase.queryOrder({
