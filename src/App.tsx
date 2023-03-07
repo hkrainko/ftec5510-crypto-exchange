@@ -26,7 +26,14 @@ const orderUseCase: OrderUseCase = new DefaultOrderUsecase()
 function App() {
 
     const queryParams = new URLSearchParams(window.location.search)
+    const merchantId = queryParams.get('merchantId')
+    const itemCode = queryParams.get('itemCode')
     const redirectUrl = queryParams.get('redirectUrl')
+
+    // Hardcoded value
+    const merchantName = "Insurance Company A"
+    const price = getProductPrice(itemCode)
+    const productName = getProductName(itemCode)
 
     const [getOrder, setOrder] = React.useState<Order | null>(null)
     const [getOrderResult, setOrderResult] = React.useState<OrderResult | null>(null)
@@ -71,8 +78,8 @@ function App() {
                 if (getOrder) {
                 <Box mt={16}>
                     <Container maxWidth="xs">
-                        <h2>2555 USD</h2>
-                        <h2>= 2555 USDT</h2>
+                        <h2>{price ?? "-"} USD</h2>
+                        <h2>= {price ? price + 0.1 : "-"} USDT</h2>
                         <Stack
                             direction="row"
                             justifyContent="space-between"
@@ -80,7 +87,16 @@ function App() {
                             spacing={2}
                         >
                             <h3>Merchant Name</h3>
-                            <h3>XXX insurance</h3>
+                            <h3>{merchantName}</h3>
+                        </Stack>
+                        <Stack
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            spacing={2}
+                        >
+                            <h3>Merchant ID</h3>
+                            <h3>{merchantId}</h3>
                         </Stack>
                         <Stack
                             direction="row"
@@ -89,7 +105,7 @@ function App() {
                             spacing={2}
                         >
                             <h3>Product Name</h3>
-                            <h3>Premium Plan A</h3>
+                            <h3>{productName}</h3>
                         </Stack>
                         <Card>
                             <Box mt={2}>
@@ -129,6 +145,28 @@ function App() {
             </BrowserRouter>
         </div>
     );
+
+    function getProductPrice(itemCode: string | null) {
+        switch (itemCode) {
+            case "7e1fbb64-4299-4b19-a265-863b1e7b06c9":
+                return 29.99
+            case "dfda2a6e-a8d4-430a-8372-6bde58d775ce":
+                return 89.99
+            case "b1117f32-2c01-45e6-9ce1-aa8c8e4d1ee2":
+                return 299.99
+        }
+    }
+
+    function getProductName(itemCode: string | null) {
+        switch (itemCode) {
+            case "7e1fbb64-4299-4b19-a265-863b1e7b06c9":
+                return "Basic Plan"
+            case "dfda2a6e-a8d4-430a-8372-6bde58d775ce":
+                return "Prime Plan"
+            case "b1117f32-2c01-45e6-9ce1-aa8c8e4d1ee2":
+                return "Executive Plan"
+        }
+    }
 }
 
 export default App;
