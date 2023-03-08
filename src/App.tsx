@@ -37,6 +37,10 @@ function App() {
 
     const [getOrder, setOrder] = React.useState<Order | null>(null)
     const [getOrderResult, setOrderResult] = React.useState<OrderResult | null>(null)
+    const [getExpireTime, setExpireTime] = React.useState<number>(0)
+    const [seconds, setSeconds] = React.useState<number>(0);
+
+    const isExpired = seconds <= 0
 
     useEffect(() => {
         orderUseCase.createOrder({
@@ -49,6 +53,7 @@ function App() {
         }).then((order) => {
             console.log(`createOrder success:${JSON.stringify(order)}`)
             setOrder(order)
+            setExpireTime(order.expireTime)
             return orderUseCase.queryOrder({
                 prepayId: order.prepayId
             })
@@ -61,6 +66,22 @@ function App() {
             console.log(e)
         });
     }, [])
+
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = getExpireTime - now;
+
+            if (distance < 0) {
+                clearInterval(intervalId);
+                setSeconds(0);
+            } else {
+                const seconds = Math.floor(distance / 1000);
+                setSeconds(seconds);
+            }
+        }, 1000);
+    }, [getExpireTime])
 
     const onClickCancel = () => {
         console.log(`cancel action`)
@@ -124,9 +145,16 @@ function App() {
                                 {getOrder?.prepayId}
                             </Typography>
                             <CardContent>
-                                <Typography variant="body1" color="text.secondary">
-                                    Time remaining 09:12
-                                </Typography>
+                                {isExpired ? (
+                                    <Typography variant="body1" color="text.secondary">
+                                        Expired
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="body1" color="text.secondary">
+                                        Time remaining {seconds}s
+                                    </Typography>
+                                )
+                                }
                             </CardContent>
                         </Card>
                     </Container>
