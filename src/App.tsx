@@ -20,6 +20,7 @@ import OrderUseCase from "./domain/interfaces/usecases/order.usecase";
 import DefaultOrderUsecase from "./domain/usecases/default.order.usecase";
 import Order from "./domain/entities/order/order";
 import OrderResult from "./domain/entities/order/order-result";
+import querystring from "query-string";
 
 const orderUseCase: OrderUseCase = new DefaultOrderUsecase()
 
@@ -39,6 +40,7 @@ function App() {
     const [getOrderResult, setOrderResult] = React.useState<OrderResult | null>(null)
     const [getExpireTime, setExpireTime] = React.useState<number>(0)
     const [seconds, setSeconds] = React.useState<number>(0);
+    const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout | null>(null);
 
     const isExpired = seconds <= 0
 
@@ -54,19 +56,53 @@ function App() {
             console.log(`createOrder success:${JSON.stringify(order)}`)
             setOrder(order)
             setExpireTime(order.expireTime)
-            return orderUseCase.queryOrder({
-                prepayId: order.prepayId
-            })
-        }).then((orderResult) => {
-            console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
-            setOrderResult(orderResult)
-            // Terminate the payment process with success code
+            // return orderUseCase.queryOrder({
+            //     prepayId: order.prepayId
+            // })
+        // }).then((orderResult) => {
+        //     console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
+        //     setOrderResult(orderResult)
+        //     // Terminate the payment process with success code
         }).catch((e) => {
             // Terminate the payment process with fail code
             console.log(e)
         });
     }, [])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const order = getOrder
+            if (order) {
+                const orderResult = await orderUseCase.queryOrder({
+                    prepayId: order.prepayId
+                })
+                console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
+                setOrderResult(orderResult)
+                if (getOrderResult?.status === "SUCCESS") { // "EXPIRED"
+                    // return success
+                    return () => {
+                        if (timeoutId) {
+                            clearTimeout(timeoutId);
+                        }
+                        if (redirectUrl && merchantId) {
+                            redirect(redirectUrl, 0, merchantId, order.prepayId)
+                        }
+                    }
+                } else if (getOrderResult?.status === "EXPIRED") {
+                    // return expired
+                    return () => {
+                        if (timeoutId) {
+                            clearTimeout(timeoutId);
+                        }
+                    }
+                }
+            }
+            const id = setTimeout(fetchData, 3000); // long polling interval of 3 seconds
+            setTimeoutId(id)
+        };
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -83,10 +119,21 @@ function App() {
         }, 1000);
     }, [getExpireTime])
 
+    const redirect = (redirectUrl: string, result: number, merchantId?: string, prepayId?: string) => {
+
+        const queryParams = {
+            result: result, //0: success, 1: user canceled, 2: expired: 3, 99: error
+            merchantId: merchantId,
+            prepayId: prepayId,
+        }
+
+        window.location.href = `${redirectUrl}?${querystring.stringify(queryParams)}`
+    }
+
     const onClickCancel = () => {
         console.log(`cancel action`)
         if (redirectUrl) {
-            window.location.href = redirectUrl
+            redirect(redirectUrl, 1)
         }
     }
 
