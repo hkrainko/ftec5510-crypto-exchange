@@ -72,13 +72,16 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             const order = getOrder
+            console.log("fetchData")
             if (order) {
+                console.log("fetchData order")
                 const orderResult = await orderUseCase.queryOrder({
                     prepayId: order.prepayId
                 })
                 console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
                 setOrderResult(orderResult)
                 if (getOrderResult?.status === "SUCCESS") { // "EXPIRED"
+                    console.log("fetchData SUCCESS")
                     // return success
                     return () => {
                         if (timeoutId) {
@@ -89,6 +92,7 @@ function App() {
                         }
                     }
                 } else if (getOrderResult?.status === "EXPIRED") {
+                    console.log("fetchData EXPIRED")
                     // return expired
                     return () => {
                         if (timeoutId) {
