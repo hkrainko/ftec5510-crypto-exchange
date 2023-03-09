@@ -45,6 +45,7 @@ function App() {
     const isExpired = seconds <= 0
 
     useEffect(() => {
+        console.log("useEffect createOrder")
         orderUseCase.createOrder({
             currency: "USDT",
             expireTime: 60000,
@@ -71,16 +72,15 @@ function App() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const order = getOrder
-            console.log("fetchData")
-            if (order) {
+            console.log(`fetchData ${getOrder}`)
+            if (getOrder) {
                 console.log("fetchData order")
                 const orderResult = await orderUseCase.queryOrder({
-                    prepayId: order.prepayId
+                    prepayId: getOrder.prepayId
                 })
                 console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
                 setOrderResult(orderResult)
-                if (getOrderResult?.status === "SUCCESS") { // "EXPIRED"
+                if (orderResult?.status === "PAID") { // "EXPIRED"
                     console.log("fetchData SUCCESS")
                     // return success
                     return () => {
@@ -88,10 +88,10 @@ function App() {
                             clearTimeout(timeoutId);
                         }
                         if (redirectUrl && merchantId) {
-                            redirect(redirectUrl, 0, merchantId, order.prepayId)
+                            redirect(redirectUrl, 0, merchantId, getOrder.prepayId)
                         }
                     }
-                } else if (getOrderResult?.status === "EXPIRED") {
+                } else if (orderResult?.status === "EXPIRED") {
                     console.log("fetchData EXPIRED")
                     // return expired
                     return () => {
@@ -106,7 +106,7 @@ function App() {
         };
 
         fetchData();
-    }, []);
+    }, [getOrder]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
