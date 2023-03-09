@@ -83,14 +83,18 @@ function App() {
                 if (orderResult?.status === "PAID") { // "EXPIRED"
                     console.log("fetchData SUCCESS")
                     // return success
-                    return () => {
-                        if (timeoutId) {
-                            clearTimeout(timeoutId);
-                        }
-                        if (redirectUrl && merchantId) {
-                            redirect(redirectUrl, 0, merchantId, getOrder.prepayId)
-                        }
+
+                    if (redirectUrl && merchantId) {
+                        redirect(redirectUrl, 0, merchantId, getOrder.prepayId)
                     }
+                    // return () => {
+                    //     if (timeoutId) {
+                    //         clearTimeout(timeoutId);
+                    //     }
+                    //     if (redirectUrl && merchantId) {
+                    //         redirect(redirectUrl, 0, merchantId, getOrder.prepayId)
+                    //     }
+                    // }
                 } else if (orderResult?.status === "EXPIRED") {
                     console.log("fetchData EXPIRED")
                     // return expired
