@@ -130,7 +130,7 @@ function App() {
     const redirect = (redirectUrl: string, result: number, merchantId?: string, prepayId?: string) => {
 
         const queryParams = {
-            result: result, //0: success, 1: user canceled, 2: expired: 3, 99: error
+            result: result, //0: success, 1: user cancelled, 2: expired: 3, 99: error
             merchantId: merchantId,
             prepayId: prepayId,
         }
