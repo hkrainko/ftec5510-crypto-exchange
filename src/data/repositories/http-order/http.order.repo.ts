@@ -11,15 +11,20 @@ import Order from "../../../domain/entities/order/order";
 export class HttpOrderRepo implements OrderRepo {
 
     // private apiPath = "https://cors-anywhere.herokuapp.com/http://www.muecode.com:8080";
-    private apiPath = "http://www.muecode.com:8080";
+    private apiPath = process.env.REACT_APP_CRYPTO_BACKEND_URL || "https://d2d18xc38k0f7a.cloudfront.net"
     private apiToken = null;
 
     private createOrderMapper = new HttpCreateOrderMapper()
     private queryOrderMapper = new HttpQueryOrderMapper()
 
+    private config = {
+        headers:{
+            Origin: "*",
+        }
+    };
     createOrder(order: OrderRequest): Promise<Order> {
         return axios
-            .post<HttpCreateOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order`, order)
+            .post<HttpCreateOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order`, order, this.config)
             .then((resp: { data: HttpCreateOrderResp; }) => {
                 return this.createOrderMapper.mapFrom(resp.data)
             })
@@ -27,7 +32,7 @@ export class HttpOrderRepo implements OrderRepo {
 
     queryOrder(query: QueryOrder): Promise<OrderResult> {
         return axios
-            .get<HttpQueryOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order/prepay-id/${query.prepayId}`)
+            .get<HttpQueryOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order/prepay-id/${query.prepayId}`, this.config)
             .then((resp: { data: HttpQueryOrderResp; }) => {
                 return this.queryOrderMapper.mapFrom(resp.data)
             })
