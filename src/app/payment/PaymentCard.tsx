@@ -1,6 +1,7 @@
 import {Box, Card, CardContent, CardHeader, CardMedia, Container, Stack, Typography} from "@mui/material";
 import React from "react";
 import Order from "../../domain/entities/order/order";
+import LogoImage from '../../logo.svg';
 
 
 export interface PaymentCardProps {
@@ -16,9 +17,23 @@ export interface PaymentCardProps {
 export default function PaymentCard(props: PaymentCardProps) {
 
     return (
-        <Card sx={{ maxWidth: 800 }}>
-            if (getOrder) {
-            <Box mt={16}>
+        <Card sx={{maxWidth: 800}}>
+
+            <CardMedia
+                component="div"
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "80px",
+                    backgroundColor: "blue",
+                    p: 2, // add padding here
+                }}
+            >
+                <img src={LogoImage} alt="logo" width={"75%"} />
+            </CardMedia>
+
+            <Box mt={2}>
                 <Container maxWidth="xs">
                     <h2>{props.price ?? "-"} USD</h2>
                     <h2>= {props.price ? props.price + 0.1 : "-"} USDT</h2>
@@ -80,7 +95,6 @@ export default function PaymentCard(props: PaymentCardProps) {
                     </Card>
                 </Container>
             </Box>
-        }
         </Card>
     )
 }
