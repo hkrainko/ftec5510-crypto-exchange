@@ -11,7 +11,8 @@ import Order from "../../../domain/entities/order/order";
 export class HttpOrderRepo implements OrderRepo {
 
     // private apiPath = "https://cors-anywhere.herokuapp.com/http://www.muecode.com:8080";
-    private apiPath = "http://www.muecode.com:8080";
+    // private apiPath = "http://www.muecode.com:8080";
+    private apiPath = "https://d2d18xc38k0f7a.cloudfront.net";
     private apiToken = null;
 
     private createOrderMapper = new HttpCreateOrderMapper()
