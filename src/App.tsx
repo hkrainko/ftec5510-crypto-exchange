@@ -5,7 +5,7 @@ import Header from "./app/header/Header";
 import {
     Avatar, Box,
     Button,
-    Card, CardActions,
+    Card, CardActionArea, CardActions,
     CardContent,
     CardHeader,
     CardMedia,
@@ -20,6 +20,7 @@ import DefaultOrderUsecase from "./domain/usecases/default.order.usecase";
 import Order from "./domain/entities/order/order";
 import OrderResult from "./domain/entities/order/order-result";
 import querystring from "query-string";
+import PaymentCard from "./app/payment/PaymentCard";
 
 const orderUseCase: OrderUseCase = new DefaultOrderUsecase()
 
@@ -147,73 +148,20 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <Header/>
+                {/*<Header/>*/}
 
-
-                if (getOrder) {
-                <Box mt={16}>
-                    <Container maxWidth="xs">
-                        <h2>{price ?? "-"} USD</h2>
-                        <h2>= {price ? price + 0.1 : "-"} USDT</h2>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <h3>Merchant Name</h3>
-                            <h3>{merchantName}</h3>
-                        </Stack>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <h3>Merchant ID</h3>
-                            <h3>{merchantId}</h3>
-                        </Stack>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <h3>Product Name</h3>
-                            <h3>{productName}</h3>
-                        </Stack>
-                        <Card>
-                            <Box mt={2}>
-                                <CardHeader
-                                    subheader="Scan this QRCode in the Binance APP"
-                                />
-                            </Box>
-                            <Box p={8} mt={-8} mb={-11}>
-                                <CardMedia
-                                    component="img"
-                                    image={getOrder?.qrcodeLink}
-                                    alt="Paella dish"
-                                />
-                            </Box>
-                            <Typography variant="body2" color="text.secondary">
-                                {getOrder?.prepayId}
-                            </Typography>
-                            <CardContent>
-                                {isExpired ? (
-                                    <Typography variant="body1" color="text.secondary">
-                                        Expired
-                                    </Typography>
-                                ) : (
-                                    <Typography variant="body1" color="text.secondary">
-                                        Time remaining {seconds}s
-                                    </Typography>
-                                )
-                                }
-                            </CardContent>
-                        </Card>
-                    </Container>
+                <Box mt={10} display={"flex"} justifyContent={"center"}>
+                    <PaymentCard
+                        price={price}
+                        merchantName={merchantName}
+                        merchantId={merchantId}
+                        productName={productName}
+                        order={getOrder}
+                        isExpired={isExpired}
+                        seconds={seconds}
+                    />
                 </Box>
-            }
+
 
 
                 <Box mt={2}>
