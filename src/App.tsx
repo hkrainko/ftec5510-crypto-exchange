@@ -1,20 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Header from "./app/header/Header";
-import {
-    Avatar, Box,
-    Button,
-    Card, CardActionArea, CardActions,
-    CardContent,
-    CardHeader,
-    CardMedia,
-    Container,
-    IconButton, Stack,
-    Typography
-} from "@mui/material";
-import AuthView from "./app/auth/AuthView";
-import OrderRepo from "./domain/interfaces/repositories/order.repo";
+import {BrowserRouter} from "react-router-dom";
+import {Box, Button, Typography} from "@mui/material";
 import OrderUseCase from "./domain/interfaces/usecases/order.usecase";
 import DefaultOrderUsecase from "./domain/usecases/default.order.usecase";
 import Order from "./domain/entities/order/order";
@@ -60,10 +47,10 @@ function App() {
             // return orderUseCase.queryOrder({
             //     prepayId: order.prepayId
             // })
-        // }).then((orderResult) => {
-        //     console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
-        //     setOrderResult(orderResult)
-        //     // Terminate the payment process with success code
+            // }).then((orderResult) => {
+            //     console.log(`queryOrder success:${JSON.stringify(orderResult)}`)
+            //     setOrderResult(orderResult)
+            //     // Terminate the payment process with success code
         }).catch((e) => {
             // Terminate the payment process with fail code
             console.log(e)
@@ -161,7 +148,6 @@ function App() {
                         seconds={seconds}
                     />
                 </Box>
-
 
 
                 <Box mt={2}>
