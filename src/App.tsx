@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {BrowserRouter} from "react-router-dom";
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Button, createTheme, ThemeProvider, Typography} from "@mui/material";
 import OrderUseCase from "./domain/interfaces/usecases/order.usecase";
 import DefaultOrderUsecase from "./domain/usecases/default.order.usecase";
 import Order from "./domain/entities/order/order";
@@ -10,6 +10,20 @@ import querystring from "query-string";
 import PaymentCard from "./app/payment/PaymentCard";
 
 const orderUseCase: OrderUseCase = new DefaultOrderUsecase()
+
+const theme = createTheme({
+    typography: {
+        h5: {
+            color: "#071e26",
+            fontWeight: 800,
+        },
+        h6: {
+            color: "#071e26",
+            fontWeight: 600,
+        }
+        // you can define other typography variants here
+    },
+});
 
 function App() {
 
@@ -134,31 +148,33 @@ function App() {
 
     return (
         <div className="App">
-            <BrowserRouter>
-                {/*<Header/>*/}
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    {/*<Header/>*/}
 
-                <Box mt={10} display={"flex"} justifyContent={"center"}>
-                    <PaymentCard
-                        price={price}
-                        merchantName={merchantName}
-                        merchantId={merchantId}
-                        productName={productName}
-                        order={getOrder}
-                        isExpired={isExpired}
-                        seconds={seconds}
-                    />
-                </Box>
+                    <Box mt={10} display={"flex"} justifyContent={"center"}>
+                        <PaymentCard
+                            price={price}
+                            merchantName={merchantName}
+                            merchantId={merchantId}
+                            productName={productName}
+                            order={getOrder}
+                            isExpired={isExpired}
+                            seconds={seconds}
+                        />
+                    </Box>
 
 
-                <Box mt={2}>
-                    <Button
-                        onClick={onClickCancel}
-                    >
-                        <Typography variant="body1" color="text.secondary">Cancel</Typography>
-                    </Button>
-                </Box>
+                    <Box mt={2}>
+                        <Button
+                            onClick={onClickCancel}
+                        >
+                            <Typography variant="body1" color="text.secondary">Cancel</Typography>
+                        </Button>
+                    </Box>
 
-            </BrowserRouter>
+                </BrowserRouter>
+            </ThemeProvider>
         </div>
     );
 

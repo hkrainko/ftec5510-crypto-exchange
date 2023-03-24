@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardHeader, CardMedia, Container, Stack, Typography} from "@mui/material";
+import {Box, Card, CardContent, CardHeader, CardMedia, Container, Stack, Typography, useTheme} from "@mui/material";
 import React from "react";
 import Order from "../../domain/entities/order/order";
 import LogoImage from '../../logo.svg';
@@ -26,7 +26,7 @@ export default function PaymentCard(props: PaymentCardProps) {
                     justifyContent: "center",
                     alignItems: "center",
                     height: "80px",
-                    backgroundColor: "blue",
+                    backgroundColor: "#071e26",
                     p: 2, // add padding here
                 }}
             >
@@ -35,16 +35,16 @@ export default function PaymentCard(props: PaymentCardProps) {
 
             <Box mt={2}>
                 <Container maxWidth="xs">
-                    <h2>{props.price ?? "-"} USD</h2>
-                    <h2>= {props.price ? props.price + 0.1 : "-"} USDT</h2>
+                    <Typography variant="h5">{props.price ?? "-"} USD</Typography>
+                    <Typography variant="h5">= {props.price ? props.price + 0.1 : "-"} USDT</Typography>
                     <Stack
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
                         spacing={2}
                     >
-                        <h3>Merchant Name</h3>
-                        <h3>{props.merchantName}</h3>
+                        <Typography variant="h6">Merchant Name</Typography>
+                        <Typography variant="h6">{props.merchantName}</Typography>
                     </Stack>
                     <Stack
                         direction="row"
@@ -52,8 +52,8 @@ export default function PaymentCard(props: PaymentCardProps) {
                         alignItems="center"
                         spacing={2}
                     >
-                        <h3>Merchant ID</h3>
-                        <h3>{props.merchantId}</h3>
+                        <Typography variant="h6">Merchant ID</Typography>
+                        <Typography variant="h6">{props.merchantId}</Typography>
                     </Stack>
                     <Stack
                         direction="row"
@@ -61,8 +61,8 @@ export default function PaymentCard(props: PaymentCardProps) {
                         alignItems="center"
                         spacing={2}
                     >
-                        <h3>Product Name</h3>
-                        <h3>{props.productName}</h3>
+                        <Typography variant="h6">Product Name</Typography>
+                        <Typography variant="h6">{props.productName}</Typography>
                     </Stack>
                     <Card>
                         <Box mt={2}>
