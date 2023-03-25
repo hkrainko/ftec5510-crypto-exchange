@@ -5,15 +5,23 @@ import {
     CardHeader,
     CardMedia,
     Container,
-    Grid, Icon,
+    Grid, Icon, Skeleton,
     Stack,
     Typography,
     useTheme
 } from "@mui/material";
-import React from "react";
+import React, {useState} from "react";
 import Order from "../../domain/entities/order/order";
 import LogoImage from '../../logo.svg';
 import ExchangeIcon from '@mui/icons-material/CurrencyExchange'
+import {makeStyles} from "tss-react/mui";
+
+const useStyles = makeStyles()((theme) => ({
+    cardStyle: {
+        border: '2px dotted lightgray',
+        borderRadius: '8px',
+    }
+}))
 
 
 export interface PaymentCardProps {
@@ -28,6 +36,20 @@ export interface PaymentCardProps {
 }
 
 export default function PaymentCard(props: PaymentCardProps) {
+
+    const classes = useStyles().classes;
+
+    const [isQRLoading, setIsQRLoading] = useState(true);
+    const [isQRError, setIsQRError] = useState(false);
+
+    function handleLoad() {
+        setIsQRLoading(false);
+    }
+
+    function handleError() {
+        setIsQRLoading(false);
+        setIsQRError(true);
+    }
 
     const getUSDTPrice = () => {
         if (props != null && props.price && props.exchangeRate) {
@@ -92,7 +114,7 @@ export default function PaymentCard(props: PaymentCardProps) {
                         <Typography variant="h6">{props.productName}</Typography>
                     </Stack>
                     <Box mt={2}/>
-                    <Card>
+                    <Card className={classes.cardStyle} elevation={0}>
                         <Box mt={4}>
                             <Typography variant="h5" color="text.secondary">
                                 You pay {usdtPrice ?? "-"}
@@ -103,11 +125,16 @@ export default function PaymentCard(props: PaymentCardProps) {
                                 subheader="Scan this QRCode in the Binance APP"
                             />
                         </Box>
-                        <Box p={8} mt={-10} mb={-11}>
+                        <Box p={8} mt={-10} mb={-11} height={280}>
                             <CardMedia
                                 component="img"
                                 image={props.order?.qrcodeLink}
                                 alt="Loading..."
+                                onLoad={handleLoad}
+                                onError={handleError}
+                                sx={{
+                                    height: "100%",
+                                }}
                             />
                         </Box>
                         <Typography variant="body2" color="text.secondary">
