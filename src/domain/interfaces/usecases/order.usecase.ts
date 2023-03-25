@@ -6,4 +6,5 @@ import Order from "../../entities/order/order";
 export default interface OrderUseCase {
     createOrder(order: OrderRequest): Promise<Order>
     queryOrder(query: QueryOrder): Promise<OrderResult>
+    getUSDTExchangeRate(): Promise<number>
 }

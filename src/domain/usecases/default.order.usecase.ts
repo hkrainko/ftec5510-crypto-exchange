@@ -21,4 +21,9 @@ export default class DefaultOrderUsecase implements OrderUseCase {
     async queryOrder(query: QueryOrder): Promise<OrderResult> {
         return this.repo.queryOrder(query);
     }
+
+    async getUSDTExchangeRate(): Promise<number> {
+        return this.repo.getUSDTExchangeRate();
+    }
+
 }

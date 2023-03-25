@@ -6,6 +6,7 @@ import axios from "axios";
 import HttpQueryOrderResp, {HttpQueryOrderMapper} from "./resp/http.query-order.resp";
 import HttpCreateOrderResp, {HttpCreateOrderMapper} from "./resp/http.create-order.resp";
 import Order from "../../../domain/entities/order/order";
+import HttpGetUSDTExchangeRateResp, {HttpGetUSDTExchangeRateMapper} from "./resp/http.get-usdt-exchange-rate.resp";
 
 
 export class HttpOrderRepo implements OrderRepo {
@@ -16,6 +17,7 @@ export class HttpOrderRepo implements OrderRepo {
 
     private createOrderMapper = new HttpCreateOrderMapper()
     private queryOrderMapper = new HttpQueryOrderMapper()
+    private getUSDTExchangeRateMapper = new HttpGetUSDTExchangeRateMapper()
 
     createOrder(order: OrderRequest): Promise<Order> {
         return axios
@@ -30,6 +32,14 @@ export class HttpOrderRepo implements OrderRepo {
             .get<HttpQueryOrderResp>(`${this.apiPath}/binance/merchant/api/v1/order/prepay-id/${query.prepayId}`)
             .then((resp: { data: HttpQueryOrderResp; }) => {
                 return this.queryOrderMapper.mapFrom(resp.data)
+            })
+    }
+
+    getUSDTExchangeRate(): Promise<number> {
+        return axios
+            .get<HttpGetUSDTExchangeRateResp>(`${this.apiPath}/crypto/api/v1/quote/sell/USDT/buy/USD`)
+            .then((resp: { data: HttpGetUSDTExchangeRateResp; }) => {
+                return this.getUSDTExchangeRateMapper.mapFrom(resp.data)
             })
     }
 

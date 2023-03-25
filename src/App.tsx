@@ -31,6 +31,7 @@ function App() {
     const merchantId = queryParams.get('merchantId')
     const itemCode = queryParams.get('itemCode')
     const redirectUrl = queryParams.get('redirectUrl')
+    const personalInfo = queryParams.get('pi')
 
     // Hardcoded value
     const merchantName = "Insurance Company A"
@@ -39,6 +40,7 @@ function App() {
 
     const [getOrder, setOrder] = React.useState<Order | null>(null)
     const [getOrderResult, setOrderResult] = React.useState<OrderResult | null>(null)
+    const [exchangeRate, setExchangeRate] = React.useState<number | null>(null)
     const [getExpireTime, setExpireTime] = React.useState<number>(0)
     const [seconds, setSeconds] = React.useState<number>(0);
     const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout | null>(null);
@@ -72,6 +74,16 @@ function App() {
     }, [])
 
     useEffect(() => {
+        console.log("get exchange rate")
+        orderUseCase.getUSDTExchangeRate().then(
+            (exchangeRate) => {
+                console.log(`exchangeRate:${exchangeRate}`)
+                setExchangeRate(exchangeRate)
+            }
+        )
+    }, [])
+
+    useEffect(() => {
         const fetchData = async () => {
             console.log(`fetchData ${getOrder}`)
             if (getOrder) {
@@ -85,8 +97,8 @@ function App() {
                     console.log("fetchData SUCCESS")
                     // return success
 
-                    if (redirectUrl && merchantId) {
-                        redirect(redirectUrl, 0, merchantId, getOrder.prepayId)
+                    if (redirectUrl && merchantId && personalInfo) {
+                        redirect(redirectUrl, 0, merchantId, getOrder.prepayId, personalInfo)
                     }
                     // return () => {
                     //     if (timeoutId) {
@@ -128,12 +140,13 @@ function App() {
         }, 1000);
     }, [getExpireTime])
 
-    const redirect = (redirectUrl: string, result: number, merchantId?: string, prepayId?: string) => {
+    const redirect = (redirectUrl: string, result: number, merchantId?: string, prepayId?: string, personalInfo?: string) => {
 
         const queryParams = {
             result: result, //0: success, 1: user cancelled, 2: expired: 3, 99: error
             merchantId: merchantId,
             prepayId: prepayId,
+            pi: personalInfo
         }
 
         window.location.href = `${redirectUrl}?${querystring.stringify(queryParams)}`
@@ -161,6 +174,7 @@ function App() {
                             order={getOrder}
                             isExpired={isExpired}
                             seconds={seconds}
+                            exchangeRate={exchangeRate}
                         />
                     </Box>
 
