@@ -1,6 +1,5 @@
-import {Button, createStyles, Icon, IconButton, Theme, Typography, useTheme} from "@mui/material";
-import {makeStyles, withStyles} from "tss-react/mui";
-import {AppBar} from "@mui/material";
+import {AppBar, IconButton} from "@mui/material";
+import {makeStyles} from "tss-react/mui";
 import React, {useState} from "react";
 import Logo from '../../logo.svg';
 
@@ -27,6 +26,8 @@ export default function Header() {
                     {/*    Exchange Payment*/}
                     {/*</Typography>*/}
                 </IconButton>
+
+
             </AppBar>
         </div>
     )

@@ -33,7 +33,7 @@ export default function PaymentCard(props: PaymentCardProps) {
                 <img src={LogoImage} alt="logo" width={"75%"} />
             </CardMedia>
 
-            <Box mt={2}>
+            <Box mt={2} mb={2}>
                 <Container maxWidth="xs">
                     <Typography variant="h5">{props.price ?? "-"} USD</Typography>
                     <Typography variant="h5">= {props.price ? props.price + 0.1 : "-"} USDT</Typography>
