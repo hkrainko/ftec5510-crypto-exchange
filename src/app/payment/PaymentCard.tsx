@@ -151,7 +151,9 @@ export default function PaymentCard(props: PaymentCardProps) {
                                     variant="rectangular"
                                     width={320}
                                     height={320}
-                                    sx={{position: 'absolute'}}
+                                    sx={{
+                                        position: 'absolute'
+                                    }}
                                 />
                             )
                             }
@@ -160,9 +162,9 @@ export default function PaymentCard(props: PaymentCardProps) {
                             {props.order?.prepayId}
                         </Typography>
                         <CardContent>
-                            {props.isExpired ? (
+                            {props.isExpired || isQRLoading ? (
                                 <Typography variant="body1" color="text.secondary">
-                                    Expired
+                                    {isQRLoading ? "Loading..." : "Expired"}
                                 </Typography>
                             ) : (
                                 <Typography variant="body1" color="text.secondary">
