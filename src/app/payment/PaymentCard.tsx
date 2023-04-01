@@ -125,14 +125,36 @@ export default function PaymentCard(props: PaymentCardProps) {
                                 subheader="Scan this QRCode in the Binance APP"
                             />
                         </Box>
-                        <Box>
+                        <Box
+                            height={{xs: 'auto', sm: '280'}}
+                            width={{xs: '100%', sm: 'auto'}}
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            position="relative"
+                        >
                             <CardMedia
                                 component="img"
                                 image={props.order?.qrcodeLink}
                                 alt="Loading..."
                                 onLoad={handleLoad}
                                 onError={handleError}
+                                height="400"
+                                width="400"
+                                style={{
+                                    objectFit: "contain",
+                                    opacity: isQRLoading ? 0 : 1
+                                }}
                             />
+                            {isQRLoading && (
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={320}
+                                    height={320}
+                                    sx={{position: 'absolute'}}
+                                />
+                            )
+                            }
                         </Box>
                         <Typography variant="body2" color="text.secondary">
                             {props.order?.prepayId}
