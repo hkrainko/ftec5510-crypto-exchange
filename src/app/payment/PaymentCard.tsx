@@ -62,7 +62,7 @@ export default function PaymentCard(props: PaymentCardProps) {
     const usdtPrice = getUSDTPrice()
 
     return (
-        <Card sx={{maxWidth: 800}}>
+        <Card sx={{width: '100%', maxWidth: 450}}>
 
             <CardMedia
                 component="div"
@@ -115,7 +115,7 @@ export default function PaymentCard(props: PaymentCardProps) {
                     </Stack>
                     <Box mt={2}/>
                     <Card className={classes.cardStyle} elevation={0}>
-                        <Box mt={4}>
+                        <Box mt={2}>
                             <Typography variant="h5" color="text.secondary">
                                 You pay {usdtPrice ?? "-"}
                             </Typography>
@@ -125,25 +125,46 @@ export default function PaymentCard(props: PaymentCardProps) {
                                 subheader="Scan this QRCode in the Binance APP"
                             />
                         </Box>
-                        <Box p={8} mt={-10} mb={-11} height={280}>
+                        <Box
+                            height={{xs: 'auto', sm: '280'}}
+                            width={{xs: '100%', sm: 'auto'}}
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            position="relative"
+                        >
                             <CardMedia
                                 component="img"
                                 image={props.order?.qrcodeLink}
                                 alt="Loading..."
                                 onLoad={handleLoad}
                                 onError={handleError}
-                                sx={{
-                                    height: "100%",
+                                height="400"
+                                width="400"
+                                style={{
+                                    objectFit: "contain",
+                                    opacity: isQRLoading ? 0 : 1
                                 }}
                             />
+                            {isQRLoading && (
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={320}
+                                    height={320}
+                                    sx={{
+                                        position: 'absolute'
+                                    }}
+                                />
+                            )
+                            }
                         </Box>
                         <Typography variant="body2" color="text.secondary">
                             {props.order?.prepayId}
                         </Typography>
                         <CardContent>
-                            {props.isExpired ? (
+                            {props.isExpired || isQRLoading ? (
                                 <Typography variant="body1" color="text.secondary">
-                                    Expired
+                                    {isQRLoading ? "Loading..." : "Expired"}
                                 </Typography>
                             ) : (
                                 <Typography variant="body1" color="text.secondary">
