@@ -184,7 +184,7 @@ function App() {
     function getProductPrice(itemCode: string | null) {
         switch (itemCode) {
             case "7e1fbb64-4299-4b19-a265-863b1e7b06c9":
-                return 0.9
+                return 0.09
             case "dfda2a6e-a8d4-430a-8372-6bde58d775ce":
                 return 4.9
             case "b1117f32-2c01-45e6-9ce1-aa8c8e4d1ee2":
